@@ -11,6 +11,8 @@ Marvin ...
 ###### Ingeniería en Sistemas
 ###### Universidad Mariano Galvez de Guatemala
 
+Programa creado con propósitos educativos para el curso. Se utilizaron sugerencias de codigo, implementaciones pasadas, herramientas y librerías de graficos
+
 ## Dependencias
 ###### Plataforma [Openjdk 21](https://jdk.java.net/archive/)
 ###### Librería [JGraphX 4.0.6](https://github.com/jgraph/jgraphx/releases/tag/v4.0.6)
