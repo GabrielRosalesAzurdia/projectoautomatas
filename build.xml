@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="MyProject" default="compile" basedir=".">
+    <description>Builds and compiles the project.</description>
+
+    <!-- Import external build configurations -->
+    <import file="nbproject/build-impl.xml"/>
+
+    <!-- Define the classpath if needed -->
+    <path id="classpath">
+        <fileset dir="lib">
+            <include name="**/*.jar"/>
+        </fileset>
+        <pathelement path="build/classes"/>
+    </path>
+
+    <!-- Define the source and build directories -->
+    <property name="src.dir" value="src"/>
+    <property name="build.classes.dir" value="build/classes"/>
+
+    <!-- Targets -->
+    <target name="mkdir">
+        <mkdir dir="${build.classes.dir}"/>
+    </target>
+
+    <target name="compile" depends="mkdir">
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}" classpathref="classpath">
+            <include name="**/*.java"/>
+        </javac>
+    </target>
+
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="dist" depends="compile">
+        <jar destfile="dist/MyProject.jar" basedir="build/classes"/>
+    </target>
+
+    <!-- Default target -->
+    <target name="default" depends="dist"/>
+</project>
