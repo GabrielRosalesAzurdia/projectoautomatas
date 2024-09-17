@@ -711,7 +711,7 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_tipoAFNDActionPerformed
 
     private void botonAddSimboloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAddSimboloActionPerformed
-        if (!textSimbolo.getText().isBlank() && cjtoSimbolos.add(textSimbolo.getText())) {
+        if (!textSimbolo.getText().isBlank() && cjtoSimbolos.add(textSimbolo.getText()) && !(textSimbolo.getText().length() > 1)) {
             comboSimbolo.addItem(textSimbolo.getText());
             actualizarTabla();
         }
