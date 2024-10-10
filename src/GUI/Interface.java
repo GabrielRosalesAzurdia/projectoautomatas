@@ -47,6 +47,7 @@ public class Interface {
     private JButton cleanTransitionButton;
     private JTextField stringToCheckField;
     private JButton cleanAll;
+    private JButton graphbutton;
 
     private HashSet<String> states = new HashSet(); // Conjunto de datos utilizando tablas Hash que no permite duplicados, eficiente en manejo
     private HashSet<String> symbols = new HashSet();
@@ -90,6 +91,7 @@ public class Interface {
                 if(alfabetoTextField.getText().length() > 1){
                     JOptionPane.showMessageDialog(MainPanel, "Por favor, solo se tomo el primer character.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
+
                 String input = alfabetoTextField.getText();
                 char firstCharacter = input.charAt(0);
 
@@ -227,6 +229,14 @@ public class Interface {
                 updateComboBoxSring();
                 updateTransitionTableHeaders();
                 updateTransitionTableRows();
+            }
+        });
+        graphbutton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                // AGREGAR FUNCIONALIDAD DE GRAFICO
+
             }
         });
     }

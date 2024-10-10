@@ -10,12 +10,10 @@ public class AFND implements Cloneable, Matcher {
     private HashSet<String> finalStates;
     private String startState = "";
     private HashSet<TransitionAFND> transitions;
-    private HashSet<TransitionEpsilon> transitionsEpsilon;
 
     public AFND() {
         this.finalStates = new HashSet();
         this.transitions = new HashSet();
-        this.transitionsEpsilon = new HashSet();
     }
 
     public void addTransition(String startState, char symbol, HashSet toStates) {
@@ -24,14 +22,6 @@ public class AFND implements Cloneable, Matcher {
 
     public void addTransition(TransitionAFND trans) {
         this.transitions.add(trans);
-    }
-
-    public void addTransitionEpsilon(String startState, HashSet toStates) {
-        this.transitionsEpsilon.add(new TransitionEpsilon(startState, toStates));
-    }
-
-    public void addTransitionEpsilon(TransitionEpsilon trans) {
-        this.transitionsEpsilon.add(trans);
     }
 
     public HashSet<String> getTransition(String state, char symbol) {
@@ -54,15 +44,6 @@ public class AFND implements Cloneable, Matcher {
         return searchResult;
     }
 
-    public HashSet<String> getTransitionEpsilon(String state) {
-        for (TransitionEpsilon sol : this.transitionsEpsilon) {
-            if (sol.getStart().equals(state)) {
-                return sol.getDestinies();
-            }
-        }
-
-        return new HashSet();
-    }
 
     @Override
     public boolean isFinalState(String state) {
@@ -79,37 +60,6 @@ public class AFND implements Cloneable, Matcher {
         return false;
     }
 
-    public HashSet<String> epsilon_closure(String state) {
-        HashSet<String> searchResult = new HashSet<>();
-        searchResult.add(state);                   //Añadimos el estado actual
-
-        transitionsEpsilon.forEach((transitionEpsilon) -> { //Recorremos las L-Transiciones
-            if (transitionEpsilon.getStart().equals(state)) { //con origen ese estado
-                transitionEpsilon.getDestinies().forEach((destinyState) -> {
-                    //Y añadimos a la solucion todos los estados de la LC del destino
-                    if(!destinyState.equals(transitionEpsilon.getStart()))//Evitamos un bucle infinito
-                        searchResult.addAll(epsilon_closure(destinyState));
-                });
-            }
-        });
-
-        return searchResult;
-    }
-
-    public HashSet<String> epsilon_closure(HashSet<String> states) { //Devuelve el cjto de estados CL(estados)
-        HashSet<String> toReturn = new HashSet();
-
-        states.forEach((state) -> {
-            HashSet<String> values = epsilon_closure(state); //Aplicamos la clausura a cada estado del conjunto
-
-            //Añadimos cada destino obtenido
-            toReturn.addAll(values);
-
-        });
-
-        return toReturn;
-    }
-
     @Override
     public boolean matchString(String string) throws Exception {
         //CONTROL DE EXCEPCIONES
@@ -123,14 +73,12 @@ public class AFND implements Cloneable, Matcher {
         char[] symbol = string.toCharArray();
         HashSet<String> state = new HashSet();
         state.add(this.getStartState());
-        state = epsilon_closure(state); //Partimos de la clausura del estado inicial
 
         for (char c : symbol) {
 
             state = getTransition(state, c); //Primero evolucionamos consumiendo simbolo
 
             //Añadimos la clausura de todos los estados destino
-            state.addAll(epsilon_closure(state));
 
             if (state.isEmpty()) {
                 throw new Exception("Error: transition with string '" + c + "' not valid!");
@@ -163,32 +111,10 @@ public class AFND implements Cloneable, Matcher {
             t.getDestinies().removeAll(toDeleteDestinies);
         }
         this.transitions.removeAll(toDelete);
-
-        //Elimina las transiciones L con origen e
-        HashSet<TransitionEpsilon> deleteTransitionEpsilon = new HashSet();
-        for (TransitionEpsilon t : this.transitionsEpsilon) {
-            if (t.getStart().equals(e)) {
-                deleteTransitionEpsilon.add(t);
-            }
-
-            //Elimina las ocurrencias en los destinos de la transicion L
-            HashSet<String> deleteDestiniesEpsilon = new HashSet();
-            for (String state : t.getDestinies()) {
-                if (state.equals(e)) {
-                    deleteDestiniesEpsilon.add(e); //Eliminar estado del destino
-                }
-            }
-            t.getDestinies().removeAll(deleteDestiniesEpsilon);
-        }
-        this.transitionsEpsilon.removeAll(deleteTransitionEpsilon);
     }
 
     public void deleteTransition(TransitionAFND t) {
         this.transitions.remove(t);
-    }
-
-    public void deleteTransitionEpsilon(TransitionEpsilon t) {
-        this.transitionsEpsilon.remove(t);
     }
 
     @Override
@@ -216,10 +142,6 @@ public class AFND implements Cloneable, Matcher {
             message.append(t).append("\n");
         }
 
-        message.append("\nTRANSITIONS EPSILON:\n");
-        for (TransitionEpsilon t : this.transitionsEpsilon) {
-            message.append(t).append("\n");
-        }
 
         return message.toString();
     }
@@ -239,9 +161,6 @@ public class AFND implements Cloneable, Matcher {
 
         copia.transitions = new HashSet<TransitionAFND>();
         copia.transitions.addAll(this.transitions);
-
-        copia.transitionsEpsilon = new HashSet<TransitionEpsilon>();
-        copia.transitionsEpsilon.addAll(this.transitionsEpsilon);
 
         return copia;
     }
@@ -275,12 +194,6 @@ public class AFND implements Cloneable, Matcher {
         HashSet<String> secondTransition = new HashSet();
         secondTransition.add("q2");
         automata.addTransition("q0", '0', secondTransition);
-        HashSet<String> thirdTransition = new HashSet();
-        thirdTransition.add("q2");
-        automata.addTransitionEpsilon("q2", thirdTransition);
-        HashSet<String> forthTransition = new HashSet();
-        forthTransition.add("q1");
-        automata.addTransitionEpsilon("q1", forthTransition);
 
         automata.setStartState("q0");
 
