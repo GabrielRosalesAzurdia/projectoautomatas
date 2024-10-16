@@ -238,10 +238,25 @@ public class Interface {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                HashSet<TransitionAFND> allTransitions = afnd.getTransitions();
-                GenGrafo.generateGraph(states, finalStates, afnd.getStartState(), allTransitions );
-                // AGREGAR FUNCIONALIDAD DE GRAFICO
 
+                try{
+                    if(finalStates.isEmpty()){
+                        JOptionPane.showMessageDialog(MainPanel, "No hay estados finales", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+                    if(comboBoxStartState.getSelectedItem().toString().isEmpty()){
+                        JOptionPane.showMessageDialog(MainPanel, "No hay estado inicial", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
+                    afnd.setFinalStates(finalStates);
+                    afnd.setStartState(comboBoxStartState.getSelectedItem().toString());
+                    HashSet<TransitionAFND> allTransitions = afnd.getTransitions();
+                    GenGrafo.generateGraph(states, finalStates, afnd.getStartState(), allTransitions );
+
+                }catch (Exception err){
+                    JOptionPane.showMessageDialog(MainPanel, "No fue posible hacer el gráfico", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
 
             }
         });
