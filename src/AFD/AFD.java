@@ -1,4 +1,5 @@
 package AFD;
+import AFND.TransitionAFND;
 import core.Matcher;
 import java.util.HashSet;
 import java.util.logging.Level;
@@ -17,6 +18,8 @@ public class AFD implements Cloneable, Matcher {
     public void addTransitions(String fromState, char symbol, String toState) {
         this.transitions.add(new TransitionAFD(fromState, symbol, toState));
     }
+
+
 
     public void addTransitions(TransitionAFD trans) {
         this.transitions.add(trans);

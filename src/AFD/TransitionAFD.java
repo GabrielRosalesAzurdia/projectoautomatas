@@ -1,5 +1,7 @@
 package AFD;
 
+import AFND.TransitionAFND;
+
 import java.util.Objects;
 
 public class TransitionAFD {
@@ -12,6 +14,12 @@ public class TransitionAFD {
         this.fromState = fromState;
         this.toState = toState;
         this.symbol = symbol;
+    }
+
+    public static TransitionAFD convertToAFD(TransitionAFND transition) {
+        // Suponiendo que solo tomamos un destino (puedes adaptar esto según sea necesario)
+        String toState = transition.getDestinies().iterator().next(); // Toma un destino
+        return new TransitionAFD(transition.getStart(), transition.getSymbol(), toState);
     }
 
     public String getFromState() {

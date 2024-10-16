@@ -1,5 +1,6 @@
 package GUI;
 
+import AFD.TransitionAFD;
 import AFND.AFND;
 
 import javax.swing.*;
@@ -8,6 +9,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.HashSet;
 import java.util.Objects;
+import AFND.TransitionAFND;
+import AFD.TransitionAFD;
 // viernes 25 se entrega
 // sabado 26 se muestra y por grupo
 public class Interface {
@@ -235,7 +238,10 @@ public class Interface {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                HashSet<TransitionAFND> allTransitions = afnd.getTransitions();
+                GenGrafo.generateGraph(states, finalStates, afnd.getStartState(), allTransitions );
                 // AGREGAR FUNCIONALIDAD DE GRAFICO
+
 
             }
         });

@@ -16,6 +16,10 @@ public class AFND implements Cloneable, Matcher {
         this.transitions = new HashSet();
     }
 
+    public HashSet<TransitionAFND> getTransitions(){
+        return transitions;
+    }
+
     public void addTransition(String startState, char symbol, HashSet toStates) {
         this.transitions.add(new TransitionAFND(startState, symbol, toStates));
     }
