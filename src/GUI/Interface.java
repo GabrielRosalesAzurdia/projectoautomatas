@@ -203,7 +203,9 @@ public class Interface {
                         return;
                     }
 
+                    afnd.setFinalStates(new HashSet<>());
                     afnd.setFinalStates(finalStates);
+                    afnd.setStartState(null);
                     afnd.setStartState(comboBoxStartState.getSelectedItem().toString());
                     if(afnd.matchString(stringToCheckField.getText())){
                         JOptionPane.showMessageDialog(MainPanel, "Cadena reconocida en el automata", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
@@ -249,8 +251,11 @@ public class Interface {
                         return;
                     }
 
+                    afnd.setFinalStates(new HashSet<>());
                     afnd.setFinalStates(finalStates);
+                    afnd.setStartState(null);
                     afnd.setStartState(comboBoxStartState.getSelectedItem().toString());
+
                     HashSet<TransitionAFND> allTransitions = afnd.getTransitions();
                     GenGrafo.generateGraph(states, finalStates, afnd.getStartState(), allTransitions );
 
